@@ -4,7 +4,7 @@ For those who are quite comfortable with programming, frameworks, etc... go on t
 
 ## Framework Working ##
 <p align="center">
-    <img src="../../resources/images/framework-working.png" />
+    <img src="../../resources/images/framework-working.png" width=35% />
 </p>
 
 Here, the idea is general, and the drawing may not be exhaustive on the number of steps.
@@ -147,7 +147,7 @@ Here, we store 2 attributes, the first one is of type *SpriteBatch* and the othe
 The *SpriteBatch* class belongs to the *libGDX* frameowrk and is used to draw polygons and textures over the screen.
 The *Texture* class also belongs to *libGDX*, and is used, as you suspected, to store a drawable texture. The constructor is pretty simple and take a **String** containing the path to the image.
 
-#### Rendering : Screen Cleaning ####
+#### Rendering: Screen Cleaning ####
 ```java
 @Override
 public void render () {
@@ -169,7 +169,7 @@ The first one is used to select the color to use when redrawing the screen, and 
 
 :exclamation: the `glClearColor()` function takes values between 0 and 1, not between 0 and 255.
 
-#### Rendering : Screen Drawing ####
+#### Rendering: Screen Drawing ####
 ```java
 batch.begin();
 batch.draw(img, 0, 0);
