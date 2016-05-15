@@ -110,5 +110,53 @@ public void render(SpriteBatch batch) {
 If you take a look at the body of the *Sprite*.`draw()` function (by going to the definition with your IDE), you will actually understand what it does. The function simply calls the `draw()` function from the *SpriteBatch* object, giving it the attributes of the *Sprite* (the position, rotation, etc...).
 
 ###### and now... TADA! this is the result ######
+/ show image here /
 
 It should actually be the same!
+Now that you know how to draw a *Sprite*, let's get deeper to find new cool features!
+Go to the `create()` function in the *Chapter1* class, and add the following code after the *Sprite* instanciation:
+```java
+public void create () {
+        ...
+       logoSprite_.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+   }
+```
+
+And this is the result if you did not change the resolution of your window:
+
+/ show image here /
+What does the code here, is simply to set the position of the *Sprite* through the `setPosition()` method. Here, we are setting the position at the center of the screen, using the *Gdx* class, containing static methods to access the *Application*, *Graphics*, etc.. it basically allows you to access some data, such as the width/height of the screen, get the number of frame per seconds, etc...
+Here, we access the screen dimensiosn through the getters `Gdx.graphics.getWidth()` and `Gdx.graphics.getHeight()`.
+
+###### Ok, the *Sprite* moved, but why is it actually not centered :grey_question: ######
+
+This is a consequence of the drawing origin. Remember the previous coordinate system drawing, we said that *libGDX* is drawing from the bottom left corner, that why the image appear to be on the top right of the screen, because its bottom left point is at the center of the screen.
+/ show image here /
+
+*libGDX* thought about us! :smiley:
+You can just use the `setOrigin()` method, allowing a sprite to know what is the origin of drawing.
+
+For instance, we can fix the drawing position of our logo by doing this in the `create()` method:
+```java
+public void create () {
+    ...
+    logoSprite_.setOrigin(logoSprite_.getWidth() / 2, logoSprite_.getHeight() / 2);
+}
+```
+Sadly, you actually see that this does not work...
+
+:exclamation: *libGDX* does not take the origin into account when drawing at a positon, but only for the **rotation** and the **scale**.
+
+Consequently, we have to do it by hand, by subtracting half of the width and half of the height to the position:
+```java
+public void create () {
+    ...
+    // Modify the setPosition like that
+    // You can either use the getOrigin as I did (because we previously set it)
+    // or subtract half of the width and half of the height
+    logoSprite_.setPosition(Gdx.graphics.getWidth() / 2 - logoSprite_.getOriginX(),
+                            Gdx.graphics.getHeight() / 2 - logoSprite_.getOriginY());
+}
+```
+
+And now you shoud obtain the proper result :smiley:
