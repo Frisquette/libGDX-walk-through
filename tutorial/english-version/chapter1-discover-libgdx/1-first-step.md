@@ -186,3 +186,9 @@ We have finally finished this section!
 * A game is composed by an entry point, an initialization, a game loop and a final step.
 * The *SpriteBatch* class is used to draw polygons/textures on the screen.
 * It is necessary to redraw the screen before drawing on it using `glClearColor()` and `glClear()`
+
+<p align="right">
+<a href="http://www.w3schools.com">
+<img border="0" alt="Draw Images" src"">
+</a>
+</p>
