@@ -158,14 +158,14 @@ public void render () {
     batch.end();
 }
 ```
-With regarde to the `render()` function, they are going to surprise you if you did not use any framework neither *OpenGL* for now.
+With regard to the `render()` function, they are going to surprise you if you did not use any framework neither *OpenGL* for now.
 ```java
 Gdx.gl.glClearColor(1, 0, 0, 1);
 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 ```
 The first one is used to select the color to use when redrawing the screen, and the other one is used to apply this coloring on the current buffer given by the `GL20.GL_COLOR_BUFFER_BIT` parameter.
 
-:exclamation: skip using these two lines will give you a screen full of everything you previously renderer.
+:exclamation: skip using these two lines will give you a screen full of everything you previously rendered.
 
 :exclamation: the `glClearColor()` function takes values between 0 and 1, not between 0 and 255.
 
