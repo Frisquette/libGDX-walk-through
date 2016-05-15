@@ -91,16 +91,17 @@ There are some missing functions in the given code, useful or not depending on w
 * `resize()`: This method is called every time the window's size is modified. This event will only be triggered once on *Android* and *iOS*, when the game is launched, as the user does not have access to any window settings.
 * `pause() / resume()`: Triggered only on *Android* and *iOS* when the application is moved to background/foreground.
 
-
-    Do not forget to dispose your assets. When building complex game, you should get
-    rid off the unneeded resources in order to free some memory space and avoid the garbage collector to be used wildly (at least on *Android*, as *iOS* does not use garbage collection).
+```
+Do not forget to dispose your assets. When building complex game, you should get
+rid off the unneeded resources in order to free some memory space and avoid the garbage collector to be used wildly (at least on *Android*, as *iOS* does not use garbage collection).
+```
 
 Now that we know the basic code structure, let's dive a bit into the code :smiley:
 
 ## Given Code Analysis ##
 
 ``` java
-public class Main extends ApplicationAdapter {
+public class Main extends ApplicationAdapter     
 	SpriteBatch batch;
 	Texture img;
 
@@ -120,3 +121,68 @@ public class Main extends ApplicationAdapter {
 	}
 }
 ```
+
+Let's try to understand the code piece by piece.
+
+#### The Application ####
+``` java
+public class Main extends ApplicationAdapter {
+...
+}
+```
+Basically, what this piece of code do is just extending the Main class from the *ApplicationAdapter*, which is an implementation of the interface *Application*, handling low level events, such as window resizing, pausing, etc...
+
+#### Variable Declaration / Initialization ####
+```java
+    SpriteBatch batch;
+	Texture img;
+
+	@Override
+	public void create () {
+		batch = new SpriteBatch();
+		img = new Texture("badlogic.jpg");
+	}
+```
+Here, we store 2 attributes, the first one is of type *SpriteBatch* and the other one *Texture*, and we intitialize them inside the `create()` function.
+The *SpriteBatch* class belongs to the *libGDX* frameowrk and is used to draw polygons and textures over the screen.
+The *Texture* class also belongs to *libGDX*, and is used, as you suspected, to store a drawable texture. The constructor is pretty simple and take a **String** containing the path to the image.
+
+#### Rendering : Screen Cleaning ####
+```java
+@Override
+public void render () {
+    Gdx.gl.glClearColor(1, 0, 0, 1);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    batch.begin();
+    batch.draw(img, 0, 0);
+    batch.end();
+}
+```
+With regarde to the `render()` function, they are going to surprise you if you did not use any framework neither *OpenGL* for now.
+```java
+Gdx.gl.glClearColor(1, 0, 0, 1);
+Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+```
+The first one is used to select the color to use when redrawing the screen, and the other one is used to apply this coloring on the current buffer given by the `GL20.GL_COLOR_BUFFER_BIT` parameter.
+
+:exclamation: skip using these two lines will give you a screen full of everything you previously renderer.
+
+:exclamation: the `glClearColor()` function takes values between 0 and 1, not between 0 and 255.
+
+#### Rendering : Screen Drawing ####
+```java
+batch.begin();
+batch.draw(img, 0, 0);
+batch.end();
+```
+We previously instanciated a *SpriteBatch* object, it is now time to use it!
+* `batch.begin()`: Sets up the drawing, by doing a lot of things, disabling depth buffer, enabling blending, etc... You do not really need this to use a framework, that's exactly why we use it :smiley:
+* `batch.draw(img, 0, 0)`: This function basically draws the given texture at the given coordinates. There are many overloads, you can take a look at them in the [libGDX documentation](https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/graphics/g2d/SpriteBatch.html#begin--).
+
+We have finally finished this section!
+
+###### Here a recap' of what we discovered: ######
+
+* A game is composed by an entry point, an initialization, a game loop and a final step.
+* The *SpriteBatch* class is used to draw polygons/textures on the screen.
+* It is necessary to redraw the screen before drawing on it using `glClearColor()` and `glClear()`
