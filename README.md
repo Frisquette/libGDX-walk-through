@@ -38,4 +38,4 @@ You now understand the section title, *libGDX* has only few cons, and (for me, b
 The whole installation process (including the download of the above tools) is well describe on the [libGDX page](https://github.com/libgdx/libgdx/wiki/Setting-up-your-Development-Environment-%28Eclipse%2C-Intellij-IDEA%2C-NetBeans%29).
 
 ## Let's Go! ##
-If you are ready to begin the adventure, you can access the [summary](SUMMARY.md) or begin with the [first chapter](tutorial/english-version/chapter1-dicovery-libgdx/1-first-step.md)
+If you are ready to begin the adventure, you can access the [summary](SUMMARY.md) or begin with the [first chapter](tutorial/english-version/chapter1-discovery-libgdx/1-first-step.md)
