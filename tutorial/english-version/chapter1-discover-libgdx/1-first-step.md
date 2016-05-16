@@ -188,7 +188,7 @@ We have finally finished this section!
 * It is necessary to redraw the screen before drawing on it using `glClearColor()` and `glClear()`
 
 <p>
-    <a href="../../SUMMARY.md">
+    <a href="../../../SUMMARY.md">
         <img align="left" src="../../resources/images/left-arrow.png">
     </a>
     <a href="2-draw-images.md">
