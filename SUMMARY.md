@@ -2,7 +2,7 @@
 
 * Discover libGDX 2D
     * [First Step](tutorial/english-version/chapter1-discover-libgdx/1-first-step.md)
-    * [Draw your first images](tutorial/english-verion/chapter1-discover-libgdx/2-draw-images.md)
+    * [Draw your first images](tutorial/english-version/chapter1-discover-libgdx/2-draw-images.md)
     * [Get some text]()
     * [Key handling (Part 1/2)]()
     * [Key handling (Part 2/2)]()
