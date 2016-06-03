@@ -50,6 +50,45 @@ You should obtain something like that:
 
 * Finally, click on **File->Save BMFont file (text)** and choose where you want to save it (it is a good idea to save it in our *assets/* folder).
 
+## Draw Text with libGDX ##
+
+Let's begin by creating the object holding the text data: the **BitmapFont** object.
+
+As usual, go to the create method to instanciate it:
+
+```java
+    font = new BitmapFont(Gdx.files.internal("font.fnt"));
+```
+
+Now that we have our **BitmapFont** instanciated, go to the `render()` method to draw it:
+
+```java
+public void render(SpriteBatch batch) {
+    font.draw(batch, "Hello World!",
+                Gdx.graphics.getWidth() / 2,
+                Gdx.graphics.getHeight / 2);
+}
+```
+
+The `draw()` method belonging to the *BitmapFont* class acts like the *Sprite* one.
+1. The **first** argument specifies the batch to use.
+2. The **second** argument the string to display
+3. The **third** and **fourth** arguments the **x** and **y** position on the screen. Here, we gave the center of the screen as a position to draw it.
+
+And this is the result:
+
+/* image *
+
+
+###### Obviously, you forgot to take the text width and height into account, no:grey_question: ######
+
+You're right!
+Let's create two variables, holding the **width** and the **height** of the text.
+
+In order to do this, we are going to use the *GlyphLayout* **class**, allowing us to get the bounds of a given string, according to the font properties. Go in the `create()` method and add the following lines:
+
+
+
 <p>
     <a href="2-draw-images.md">
         <img align="left" src="../../resources/images/left-arrow.png">
@@ -58,5 +97,3 @@ You should obtain something like that:
         <img align="right" src="../../resources/images/right-arrow.png">
     </a>
 </p>
-
-## Draw Text with libGDX ##
