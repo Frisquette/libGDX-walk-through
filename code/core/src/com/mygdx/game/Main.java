@@ -10,18 +10,23 @@ public class Main extends ApplicationAdapter {
 	private SpriteBatch batch_;
 
     private Chapter1 chapter1_;
+	private Chapter2 chapter2_;
 	
 	@Override
 	public void create () {
 		batch_ = new SpriteBatch();
-		chapter1_ = new Chapter1();
-        chapter1_.create();
+
+		//chapter1_ = new Chapter1();
+        //chapter1_.create();
+
+		chapter2_ = new Chapter2();
+		chapter2_.create();
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-		chapter1_.dispose();
+		//chapter1_.dispose();
 	}
 
 	@Override
@@ -29,7 +34,8 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch_.begin();
-		chapter1_.render(batch_);
+		//chapter1_.render(batch_);
+		chapter2_.render(batch_);
 		batch_.end();
 	}
 }
