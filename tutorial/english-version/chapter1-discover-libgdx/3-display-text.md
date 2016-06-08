@@ -87,7 +87,38 @@ Let's create two variables, holding the **width** and the **height** of the text
 
 In order to do this, we are going to use the *GlyphLayout* **class**, allowing us to get the bounds of a given string, according to the font properties. Go in the `create()` method and add the following lines:
 
+```java
+public void create () {
+    ...
+    glyphLayout_ = new GlyphLayout(); // Instanciantes a new GlyphLayout
+    glyphLayout_.setText(font_, "Hello World!"); // Set the current text
+}
+```
 
+As you can see, I used the `setText()` method from the *GlyphLayout* class.
+This is used to set the current of which we want to determine the **width**
+and **height**.
+
+Now, you can go to the `render()` method, and, as usual, subtract **half of the
+width** and **half of the height**:
+
+```java
+public void render(SpriteBatch batch)
+{
+    font_.draw(batch, "Hello World!", Gdx.graphics.getWidth() / 2 - glyphLayout_.width / 2,
+                        Gdx.graphics.getHeight() / 2 - glyphLayout_.height / 2);
+}
+```
+
+Now, you should obtain what we fought for!
+/ image /
+
+###### Here a recap' of what we learned: ######
+
+* We can draw in *libGDX* using a *BitmapFont*
+* We can create our own *BitmapFont* using the small **Hiero** utilitary.
+* In order to obtain the text **dimensions**, we have to use the *GlyphLayout*
+class and call the `setText()` method to set the *String* of which we want to obtain the size.
 
 <p>
     <a href="2-draw-images.md">
