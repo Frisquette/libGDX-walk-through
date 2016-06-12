@@ -11,6 +11,7 @@ public class Main extends ApplicationAdapter {
 
     private Chapter1 chapter1_;
 	private Chapter2 chapter2_;
+	private Chapter3 chapter3_;
 	
 	@Override
 	public void create () {
@@ -19,8 +20,15 @@ public class Main extends ApplicationAdapter {
 		//chapter1_ = new Chapter1();
         //chapter1_.create();
 
-		chapter2_ = new Chapter2();
-		chapter2_.create();
+		//chapter2_ = new Chapter2();
+		//chapter2_.create();
+
+		chapter3_ = new Chapter3();
+		chapter3_.create();
+	}
+
+	public void update() {
+		chapter3_.update();
 	}
 
 	@Override
@@ -33,9 +41,13 @@ public class Main extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		// Updates the scene
+		chapter3_.update();
+		// Draws the scene
 		batch_.begin();
 		//chapter1_.render(batch_);
-		chapter2_.render(batch_);
+		chapter3_.render(batch_);
 		batch_.end();
 	}
 }
