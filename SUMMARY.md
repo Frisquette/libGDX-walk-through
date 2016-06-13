@@ -3,8 +3,8 @@
 * Discover libGDX 2D
     * [First Step](tutorial/english-version/chapter1-discover-libgdx/1-first-step.md)
     * [Draw your first images](tutorial/english-version/chapter1-discover-libgdx/2-draw-images.md)
-    * [Get some text]()
-    * [Key handling (Part 1/2)]()
+    * [Get some text](tutorial/english-version/chapter1-discover-libgdx/3-display-text.md)
+    * [Key handling (Part 1/2)](tutorial/english-version/chapter1-discover-libgdx/4-keys-handling-1.md)
     * [Key handling (Part 2/2)]()
     * [Play sounds and music!]()
     * [TP: Tic-Tac-Toe]()

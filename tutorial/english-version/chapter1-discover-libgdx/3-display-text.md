@@ -124,7 +124,7 @@ class and call the `setText()` method to set the *String* of which we want to ob
     <a href="2-draw-images.md">
         <img align="left" src="../../resources/images/left-arrow.png">
     </a>
-    <a href="3-display-text.md">
+    <a href="4-keys-handling-1.md">
         <img align="right" src="../../resources/images/right-arrow.png">
     </a>
 </p>
