@@ -18,13 +18,29 @@ public class Chapter3 {
 
     public void update() {
         if (Gdx.input.isKeyPressed(Input.Keys.D))
-            logoSprite_.translateX(1.5f);
+            logoSprite_.translateX(100f * Gdx.graphics.getDeltaTime());
         if (Gdx.input.isKeyPressed(Input.Keys.A))
-            logoSprite_.translateX(-1.5f);
+            logoSprite_.translateX(-100f * Gdx.graphics.getDeltaTime());
         if (Gdx.input.isKeyPressed(Input.Keys.W))
-            logoSprite_.translateY(1.5f);
+            logoSprite_.translateY(100f * Gdx.graphics.getDeltaTime());
         if (Gdx.input.isKeyPressed(Input.Keys.S))
-            logoSprite_.translateY(-1.5f);
+            logoSprite_.translateY(-100f * Gdx.graphics.getDeltaTime());
+
+        moveToMouse();
+    }
+
+    public void moveToMouse() {
+        logoSprite_.setPosition(Gdx.input.getX() - logoSprite_.getOriginX(),
+                Gdx.graphics.getHeight() - Gdx.input.getY() - logoSprite_.getOriginY());
+
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            logoSprite_.setPosition(0f, 0f);
+        }
+        else if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+            float xPos = Gdx.graphics.getWidth() - logoSprite_.getWidth();
+            float yPos = Gdx.graphics.getHeight() - logoSprite_.getHeight();
+            logoSprite_.setPosition(xPos, yPos);
+        }
     }
 
     public void render(SpriteBatch batch) {
