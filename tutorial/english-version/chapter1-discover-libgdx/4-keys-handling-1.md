@@ -156,3 +156,12 @@ In order to understand how it works here, you have to really understand how the 
 So, basically, you have to subtract the origin for the **x-axis** but, for the **y-axis** you have to reverse the coordinates system by subtracting the current **y position** and the **origin** to the total **height** of the screen.
 
 This small chapter is now over, let's continue to the next chapter, introducing the **polling** on smartphones.
+
+<p>
+    <a href="3-display-text.md">
+        <img align="left" src="../../resources/images/left-arrow.png">
+    </a>
+    <a href="5-keys-handling-2.md">
+        <img align="right" src="../../resources/images/right-arrow.png">
+    </a>
+</p>
