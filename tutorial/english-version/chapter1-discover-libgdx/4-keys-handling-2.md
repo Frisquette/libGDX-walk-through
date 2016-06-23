@@ -86,6 +86,42 @@ Giving you the acceleration on the 3 axis.
 ## Going Further With The Gyroscope ##
 
 The **accelerometer** is a good way to add gameplay features to you games. However, sometimes, you just want to know how the device is oriented, according to the coordinates system defined by the phone (on the above drawing). In order to do this, you have to use the **gyroscope.**
+
+In order to use this sensor, you first have to activate it through this command:
+
+```java
+config = new AndroidApplicationConfiguration();
+config.useGyroscope = true;
+```
+
+```
+Actually, whenever you need to switch off/on a sensor, you can just get back the ApplicationConfiguration from the target you want, and switch on/off the boolean corresponding to the sensor you want to modify.
+```
+
 What you should know is that every **Android** may not possess a **gyroscope**, that's why you have to check, before trying to using it, if it exists:
 
 * `Gdx.input.isPeripheralAvailable(Peripheral.Gyroscope);`
+
+What basically does the `Gdx.input.isPeripheralAvailable()` is to check whether a given peripheral can be accessed on the device currently running your code. It shall be used with the *Peripheral* static **enum**, containing basic attributes (**gyroscope**, **compass**, etc...).
+
+Being sure the returned **boolean** is **true**, you can use the following methods:
+
+* `Gdx.input.getGyroscopeX()`
+* `Gdx.input.getGyroscopeY()`
+* `Gdx.input.getGyroscopeZ()`
+
+Giving you the rate of rotation arround each axis (in **rad/s**)
+
+## Other Sensors ##
+
+I will not list you every existing sensors (some devices can have a bunch of them!), you can follow [this link](https://github.com/libgdx/libgdx/wiki/Input-handling), and on the right side, choosing the sensor you want to know about.
+The method to use them is often the same, using the **configuration** to activate it, and check whether it is on the device or not.
+
+<p>
+    <a href="4-keys-handling-1.md">
+        <img align="left" src="../../resources/images/left-arrow.png">
+    </a>
+    <a href="5-sound.md">
+        <img align="right" src="../../resources/images/right-arrow.png">
+    </a>
+</p>
