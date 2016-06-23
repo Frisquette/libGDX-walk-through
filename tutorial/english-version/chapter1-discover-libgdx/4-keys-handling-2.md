@@ -68,3 +68,24 @@ Be careful here, when using the getX() and getY() methods without the index para
 ## Going Further With The Accelerometer ##
 
 *libGDX* offers you a **wrapper** arround the device **Accelerometer**.
+
+The accelerometer axis are oriented as follows on **Android**:
+
+<p align="center">
+    <img src="../../resources/images/accelerometer.png" width=50% />
+</p>
+
+You can use these useful methods to handle the accelerometer:
+
+* `Gdx.input.getAccelerometerX()`
+* `Gdx.input.getAccelerometerY()`
+* `Gdx.input.getAccelerometerZ()`
+
+Giving you the acceleration on the 3 axis.
+
+## Going Further With The Gyroscope ##
+
+The **accelerometer** is a good way to add gameplay features to you games. However, sometimes, you just want to know how the device is oriented, according to the coordinates system defined by the phone (on the above drawing). In order to do this, you have to use the **gyroscope.**
+What you should know is that every **Android** may not possess a **gyroscope**, that's why you have to check, before trying to using it, if it exists:
+
+* `Gdx.input.isPeripheralAvailable(Peripheral.Gyroscope);`
