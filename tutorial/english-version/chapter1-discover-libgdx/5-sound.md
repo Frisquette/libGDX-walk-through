@@ -9,7 +9,7 @@ For instance, a single gun shot sound, a step noise, etc...
 
 At the opposite, we consider a **long**, repeatable or not audio file as a **music**.
 
-:exclamation: Be aware that if your file is heavy (actually more than **1 mo**)
+:exclamation: Be aware that if your file is heavy (actually more than **1 mo**), it will be impossible to use
 
 Below a list of supported audio file:
 
@@ -18,3 +18,10 @@ Below a list of supported audio file:
 * **wav**
 
 ## Play your first sound ##
+
+In the asset folder, you have access to several sounds for the tutorial.
+We are going to load one, and see how to play it.
+
+#### Load it first ####
+
+[WIP]
