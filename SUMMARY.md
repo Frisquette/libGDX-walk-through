@@ -5,8 +5,8 @@
     * [Draw your first images](tutorial/english-version/chapter1-discover-libgdx/2-draw-images.md)
     * [Get some text](tutorial/english-version/chapter1-discover-libgdx/3-display-text.md)
     * [Key handling (Part 1/2)](tutorial/english-version/chapter1-discover-libgdx/4-keys-handling-1.md)
-    * [Key handling (Part 2/2)]()
-    * [Play sounds and music!]()
+    * [Key handling (Part 2/2)](tutorial/english-version/chapter1-discover-libgdx/4-keys-handling-2.md)
+    * [Play sounds and music!](tutorial/english-version/chapter1-discover-libgdx/5-sound.md)
     * [TP: Tic-Tac-Toe]()
 * Going Further in libGDX 2D
     * [Cameras & Viewports: see the world in another way (Part 1/2)]()
