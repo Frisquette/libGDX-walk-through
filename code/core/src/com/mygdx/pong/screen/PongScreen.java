@@ -90,11 +90,24 @@ public class PongScreen {
         Rectangle rec1 = racketLeft_.getBoundingRectangle();
         Rectangle rec2 = racketRight_.getBoundingRectangle();
 
-        if (rec1.overlaps(ball_.getBoundingRectangle())) {
-            ball_.setDirection(new Vector2(1, 0));
-                System.out.println("teeeesty");
+        if (rec1.overlaps(ball_.getBoundingRectangle()))
+            ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getY() + ball_.getHeight() / 2));
+        if (rec2.overlaps(ball_.getBoundingRectangle())) {
+            Vector2 dir = getCollisionDirection(racketLeft_, ball_.getY() + ball_.getHeight() / 2);
+            dir.x *= -1;
+            ball_.setDirection(dir);
         }
-        if (rec2.overlaps(ball_.getBoundingRectangle()))
-            ball_.setDirection(new Vector2(-1, 0));
+    }
+
+    private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
+
+        Vector2 direction = new Vector2(1, 0);
+
+        // Upper part of the racket
+        direction.y = Math.abs((r.getY() + r.getHeight() / 2) - collisionPointY) / (r.getHeight() / 2);
+        if ((collisionPointY < r.getY() + r.getHeight() / 2))
+            direction.y *= -1;
+
+        return direction;
     }
 }
