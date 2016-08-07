@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.pong.Ball;
 import com.mygdx.pong.Racket;
@@ -16,7 +17,10 @@ public class PongScreen {
     private Racket  racketRight_;
     private Ball    ball_;
 
+    private Vector2 normal_;
+
     private boolean paused_;
+    private boolean gameOver_;
 
     public PongScreen() {
         terrainTexture_ = new Texture("pong/terrain.png");
@@ -25,11 +29,11 @@ public class PongScreen {
         racketRight_ = new Racket(780, 300);
 
         ball_ = new Ball(390, 290);
-        Vector2 direction = new Vector2((float)Math.random(), (float)Math.random());
+        //Vector2 direction = new Vector2((float)Math.random(), (float)Math.random());
+        Vector2 direction = new Vector2(-1, 0);
         ball_.setDirection(direction);
-    }
 
-    public void resize(int w, int h) {
+        normal_ = new Vector2(0, -1);
     }
 
     public void update() {
@@ -37,23 +41,26 @@ public class PongScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
             paused_ = !paused_;
 
-        if (paused_)
+        if (paused_ || gameOver_)
             return;
 
         if (Gdx.input.isKeyPressed(Input.Keys.Z))
-            racketLeft_.translateY(7.0f);
+            racketLeft_.moveUp();
         else if (Gdx.input.isKeyPressed(Input.Keys.S))
-            racketLeft_.translateY(-7.0f);
+            racketLeft_.moveDown();
 
         if (Gdx.input.isKeyPressed(Input.Keys.I))
-            racketRight_.translateY(7.0f);
+            racketRight_.moveUp();
         else if (Gdx.input.isKeyPressed(Input.Keys.K))
-            racketRight_.translateY(-7.0f);
+            racketRight_.moveDown();
 
         // Updates the ball
         checkTerrainCollisions();
         checkRacketCollision();
+
         ball_.update();
+        if (ball_.getX() <= 0 || ball_.getX() >= 800)
+            gameOver_ = true;
     }
 
     public void render(SpriteBatch batch) {
@@ -67,21 +74,27 @@ public class PongScreen {
     }
 
     private void checkTerrainCollisions() {
+
+        Vector2 direction = ball_.getDirection();
         if (ball_.getY() >= 560) {
-            Vector2 direction = ball_.getDirection();
-            Vector2 normal = new Vector2(0, -1);
-            float dot = 2 * direction.dot(normal.scl(-1));
-            ball_.setDirection(direction.sub(normal.scl(dot)));
+            float dot = 2 * direction.dot(normal_.scl(-1));
+            ball_.setDirection(direction.sub(normal_.scl(dot)));
         }
         else if (ball_.getY() <= 20) {
-            Vector2 direction = ball_.getDirection();
-            Vector2 normal = new Vector2(0, -1);
-            float dot = 2 * direction.dot(normal.scl(1));
-            ball_.setDirection(direction.sub(normal.scl(dot)));
+            float dot = 2 * direction.dot(normal_);
+            ball_.setDirection(direction.sub(normal_.scl(dot)));
         }
     }
 
     private void checkRacketCollision() {
-        
+        Rectangle rec1 = racketLeft_.getBoundingRectangle();
+        Rectangle rec2 = racketRight_.getBoundingRectangle();
+
+        if (rec1.overlaps(ball_.getBoundingRectangle())) {
+            ball_.setDirection(new Vector2(1, 0));
+                System.out.println("teeeesty");
+        }
+        if (rec2.overlaps(ball_.getBoundingRectangle()))
+            ball_.setDirection(new Vector2(-1, 0));
     }
 }

@@ -12,7 +12,6 @@ public class Ball extends Sprite {
     public Ball(int x, int y) {
         super(new Texture("pong/ball.png"));
 
-        this.setOrigin(10, 10);
         this.setPosition(x, y);
     }
 
