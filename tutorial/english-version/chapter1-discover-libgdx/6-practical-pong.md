@@ -30,3 +30,7 @@ I chose to split the game like this:
 In our **Pong** game, we are going to use pretty basic maths. You can use something better for the physics, but I wanted to keep it simple. You could use a lot of things, like vector reflection, acceleration, etc... But this is not the point here.
 
 #### The Ball ####
+
+<p align="center">
+    <img src="../../resources/images/pong-exp1.png" width=60% />
+</p>
