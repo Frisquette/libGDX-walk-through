@@ -31,6 +31,33 @@ In our **Pong** game, we are going to use pretty basic maths. You can use someth
 
 #### The Ball ####
 
+##### Terrain collisions #####
+
 <p align="center">
     <img src="../../resources/images/pong-exp1.png" width=60% />
+</p>
+
+As you can see on the above drawing, terrain collisions are going to be simply handled by keeping the same *x* direction and getting the **opposite** value of the *y* coordinate.
+We are going to store the direction as a 2D vector.
+For those who don't know what is a vector, you should **Google** it in order to know some basic maths. If you are here, I think that there is a lot of chance you know what is a vector, but anyway, it is better for the others to understand it.
+
+In pseudocode, we will obtain something like:
+```
+direction = (oldDirection.x, - oldDirection.y);
+```
+
+##### Racket collisions #####
+
+If you do not know it, a vector has a direction and a magnitude. Basically, a normalized vector is described by a direction and a magnitude equals to 1.
+We want to find the new **direction** after the ball collision with a racket:
+
+* For the *x* component, we will look at the racket that collides. If it is the left one, the *x* component will simply have **1**, because the ball will move toward the right part.
+If it is the right one, it will be **-1**, because the ball will move toward the left.
+* For the *y* component, I decided to use something that has given good results for me.
+We will give the *y* component a value between **-1** and **1**, according to the length between the *y* component of the ball and the center of the racket. If the ball is centered on the racket, it will have a **0** value and go straight forward. If it is close to the top extremity of the racket, it will go at arround **45° North**, otherwise, if it is close to the bottom extremity, it will go at arround **45° South**
+
+Below a little drawing explaning all this strange description:
+
+<p align="center">
+    <img src="../../resources/images/pong-exp2.png" width=60% />
 </p>

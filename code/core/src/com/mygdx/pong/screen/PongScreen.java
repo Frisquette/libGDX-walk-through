@@ -23,8 +23,7 @@ public class PongScreen {
     private int         scoreLeft_;
     private int         scoreRight_;
 
-    private boolean     paused_;
-    private boolean     gameOver_;
+    private boolean     playing_;
 
     public PongScreen() {
         terrainTexture_ = new Texture("pong/terrain.png");
@@ -40,12 +39,10 @@ public class PongScreen {
 
     public void update() {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
-            paused_ = !paused_;
-        else if (Gdx.input.isKeyPressed(Input.Keys.R) && gameOver_)
+        if (Gdx.input.isKeyPressed(Input.Keys.R) && !playing_)
             reset();
 
-        if (paused_ || gameOver_)
+        if (!playing_)
             return;
 
         // Updates rackets
@@ -64,7 +61,7 @@ public class PongScreen {
 
         checkTerrainCollisions();
         checkRacketCollision();
-        gameOver_ = checkGameOver();
+        playing_ = checkGameOver();
     }
 
     public void render(SpriteBatch batch) {
@@ -78,6 +75,8 @@ public class PongScreen {
         // Draws the score
         font_.draw(batch, "" + scoreLeft_, 200, 540);
         font_.draw(batch, "" + scoreRight_, 600, 540);
+        if (!playing_)
+            font_.draw(batch, "Press R to begin", 270, 200);
     }
 
     private void checkTerrainCollisions() {
@@ -104,7 +103,7 @@ public class PongScreen {
         Vector2 direction = new Vector2(1, 0);
 
         // Upper part of the racket
-        direction.y = Math.abs((r.getY() + r.getHeight() / 2) - collisionPointY) / (r.getHeight() / 2) * 0.6f;
+        direction.y = Math.abs((r.getY() + r.getHeight() / 2) - collisionPointY) / (r.getHeight() / 2);
         if ((collisionPointY < r.getY() + r.getHeight() / 2))
             direction.y *= -1;
 
@@ -114,17 +113,17 @@ public class PongScreen {
     private boolean checkGameOver() {
         if (ball_.getX() <= -20) {
             ++scoreRight_;
-            return true;
+            return false;
         }
         else if (ball_.getX() >= 800) {
             ++scoreLeft_;
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     private void reset() {
-        gameOver_ = false;
+        playing_ = true;
         ball_.init(390, 290);
         racketLeft_.init();
         racketRight_.init();
