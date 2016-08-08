@@ -18,9 +18,6 @@ public class Main extends ApplicationAdapter {
 		pongScreen_ = new PongScreen();
 	}
 
-	public void update() {
-	}
-
 	@Override
 	public void dispose() {
 		super.dispose();
