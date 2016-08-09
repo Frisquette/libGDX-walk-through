@@ -161,7 +161,7 @@ This small chapter is now over, let's continue to the next chapter, introducing 
     <a href="3-display-text.md">
         <img align="left" src="../../resources/images/left-arrow.png">
     </a>
-    <a href="5-keys-handling-2.md">
+    <a href="4-keys-handling-2.md">
         <img align="right" src="../../resources/images/right-arrow.png">
     </a>
 </p>

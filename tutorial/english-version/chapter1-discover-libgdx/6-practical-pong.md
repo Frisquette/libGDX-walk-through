@@ -281,7 +281,6 @@ public void moveUp(float deltaTime) {
 }
 ```
 The code is pretty basic, we move the racket up only if it has not reached the top of the screen. As it moves only upside down, we only translate it on the *y* coordinate, by a given amount and the **delaTime** for time independance.
-The `moveDown()` method works the same way and do not need more explanations.
 
 #### Grouping things together ####
 
@@ -340,5 +339,91 @@ public class PongScreen {
 
 Here, we created the 2 rackets and the ball, giving some hardcoded position (as we know the resolution will never change).
 * In the `render()` method, we draw each entity, by drawing the associated sprite texture.
-* In the `update()` method, we call `moveRackets()`, which is performs a simple check, in order to know which key has been pressed.
-Here, I chose to let the left player play with **W** and **S** while the right player plays with **I** and **K**
+* In the `update()` method, we call `moveRackets()`, which performs a simple check, in order to know which key has been pressed.
+Here, I chose to let the left player play with **W** and **S** while the right player plays with **I** and **K**.
+Each time one of these keys is pressed, the associated racket will move **up** and **down** by a given amount.
+
+Now, your game should be a bit animated, allowing you to move the rackets.
+
+<p align="center">
+    <img src="../../resources/images/pong-screen2.jpg" width=50% />
+</p>
+
+Now, what we can do is simply **update** the ball, using its `update()`.
+You should change the **PongScreen** `update()` as follow:
+
+###### PongScreen.java #######
+```java
+public void update() {
+        ...
+        // Updates the ball position
+        ball_.update(Gdx.graphics.getDeltaTime());
+}
+```
+
+We do not have any collisions yet, so the ball will move either toward the right or toward the left, without being stopped.
+
+##### Terrain collisions #####
+
+Terrain collisions are easy to handle, as shown in the **maths part**.
+We are simply going to create checking method that is going to be called each frame in the `update()` method.
+
+###### PongScreen.java #######
+```java
+public void update() {
+        ...
+        checkTerrainCollisions();
+}
+
+private void checkTerrainCollisions() {
+    Vector2 direction = ball_.getDirection();
+    if (ball_.getSprite().getY() >= 560 || ball_.getSprite().getY() <= 20)
+        ball_.setDirection(new Vector2(direction.x, - direction.y));
+}
+```
+
+As we said, we take the opposite *y* component keeping the same *x* component, and that's all!
+
+##### Racket collisions #####
+
+Ok nice! we have something, but we still can not play.
+We are now going to make a `checkRacketCollision()` method, also called every frame, but taking care of changing ball direction whenever a collision occured:
+
+###### PongScreen.java #######
+```java
+public void update() {
+        ...
+        checkRacketCollision();
+}
+
+private void checkRacketCollision() {
+    // Gets back each rectangle bouding our rackets
+    Rectangle rec1 = racketLeft_.getSprite().getBoundingRectangle();
+    Rectangle rec2 = racketRight_.getSprite().getBoundingRectangle();
+
+    // Checks whether the ball collides with the left racket
+    if (rec1.overlaps(ball_.getSprite().getBoundingRectangle()))
+        ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2));
+    // Checks whether the ball collides with the right racket
+    if (rec2.overlaps(ball_.getSprite().getBoundingRectangle())) {
+        Vector2 dir = getCollisionDirection(racketRight_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2);
+        dir.x *= -1;
+        ball_.setDirection(dir);
+    }
+}
+
+private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
+     Vector2 direction = new Vector2(1, 0);
+
+     // Upper part of the racket
+     float halfHeight = (r.getSprite().getHeight() / 2);
+     float distanceToCenter = Math.abs(r.getSprite().getY() + halfHeight - collisionPointY);
+     direction.y = distanceToCenter / halfHeight;
+     if (collisionPointY < r.getSprite().getY() + halfHeight)
+         direction.y *= -1;
+
+     return direction;
+ }
+```
+
+This part of the code needs more explanations.
