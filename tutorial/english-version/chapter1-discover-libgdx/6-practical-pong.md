@@ -48,7 +48,6 @@ direction = (oldDirection.x, - oldDirection.y);
 
 ##### Racket collisions #####
 
-If you do not know it, a vector has a direction and a magnitude. Basically, a normalized vector is described by a direction and a magnitude equals to 1.
 We want to find the new **direction** after the ball collision with a racket:
 
 * For the *x* component, we will look at the racket that collides. If it is the left one, the *x* component will simply have **1**, because the ball will move toward the right part.
@@ -59,5 +58,69 @@ We will give the *y* component a value between **-1** and **1**, according to th
 Below a little drawing explaning all this strange description:
 
 <p align="center">
-    <img src="../../resources/images/pong-exp2.png" width=60% />
+    <img src="../../resources/images/pong-exp2.png" width=45% />
 </p>
+
+As you can see, the closer the ball is to the middle of the racket, the straighter it is going to move. However, when it collides with the top of the racket, the direction will be close to **(1, 1)**, meaning the vector is going to be oriented North-East.
+For the bottom part of the racket, we will keep the same formula, and just take the **opposite** of the *y* component, in order to point toward the South.
+
+All the *"formulas"* I am introducing here are not special formulas for this game, if you look on the internet, you may find very different explanations. I just thought it was simple to implement, and it could make the game fun to be played.
+If you have better idea to improve the **physics**, do not hesitate to implement them.
+
+## Let's Code ##
+
+#### Basic screen setup ####
+
+The **PongScreen** class will be used as a **Screen**/**State**, containing our game logic. It will be the major part of the program, linking everything together.
+I chose to follow a basic template, our **Screen** will have two major methods: `update()` and `render()`
+
+###### PongScreen.java #######
+```java
+public class PongScreen {
+
+    public PongScreen() { }
+
+    public void update() { }
+
+    public void render(SpriteBatch batch) { }
+```
+
+For now, it should basically looks like that.
+I chose to do it like that in order to really split the **Pong** code from the exercises from previous/next chapters. You can directly use the **Main** class if you prefer.
+Anyway, if you use this class, do not forget to call it in the **Main** class, which is the entry point of our game.
+
+###### Main.java #######
+```java
+public class Main extends ApplicationAdapter {
+	private SpriteBatch batch_;
+	private PongScreen  pongScreen_;
+
+	@Override
+	public void create () {
+		batch_ = new SpriteBatch();
+		pongScreen_ = new PongScreen();
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
+
+	@Override
+	public void render () {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		// Updates the scene
+		pongScreen_.update();
+		// Draws the scene
+		batch_.begin();
+		pongScreen_.render(batch_);
+		batch_.end();
+	}
+}
+```
+
+Ok, now that our base is setup, we can begin to create our models, the ball and the racket.
+
+#### The different entities ####
