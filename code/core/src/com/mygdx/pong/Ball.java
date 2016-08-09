@@ -4,18 +4,27 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-public class Ball extends Sprite {
+public class Ball {
 
-    private final Vector2 normal = new Vector2(0, 1);
+    private Sprite  sprite_;
     private Vector2 direction_;
 
-    public Ball() {
-        super(new Texture("pong/ball.png"));
+    public Ball(int x, int y) {
+        sprite_ = new Sprite(new Texture("pong/ball.png"));
+        init(x, y);
     }
 
     public void update(float deltaTime) {
-        this.translate(direction_.x * Const.BALL_SPEED * deltaTime,
-                       direction_.y * Const.BALL_SPEED * deltaTime);
+        sprite_.translate(direction_.x * Const.BALL_SPEED * deltaTime,
+                          direction_.y * Const.BALL_SPEED * deltaTime);
+    }
+
+    public void init(int x, int y) {
+        sprite_.setPosition(x, y);
+        if (2 * (float)Math.random() - 1.0f <= 0.0f)
+            setDirection(new Vector2(-1.0f, 0.0f));
+        else
+            setDirection(new Vector2(1.0f, 0.0f));
     }
 
     public void setDirection(Vector2 direction) {
@@ -27,11 +36,7 @@ public class Ball extends Sprite {
         return direction_;
     }
 
-    public void init(int x, int y) {
-        this.setPosition(x, y);
-        if (2 * (float)Math.random() - 1.0f <= 0.0f)
-            setDirection(new Vector2(-1.0f, 0.0f));
-        else
-            setDirection(new Vector2(1.0f, 0.0f));
+    public Sprite getSprite() {
+        return sprite_;
     }
 }

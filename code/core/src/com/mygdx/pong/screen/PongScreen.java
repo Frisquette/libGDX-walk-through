@@ -12,7 +12,7 @@ import com.mygdx.pong.Racket;
 
 public class PongScreen {
 
-    private Texture terrainTexture_;
+    private Texture     terrainTexture_;
 
     private Racket      racketLeft_;
     private Racket      racketRight_;
@@ -33,8 +33,7 @@ public class PongScreen {
         racketLeft_ = new Racket(0, 300);
         racketRight_ = new Racket(780, 300);
 
-        ball_ = new Ball();
-        ball_.init(390, 290);
+        ball_ = new Ball(390, 290);
     }
 
     public void update() {
@@ -45,17 +44,8 @@ public class PongScreen {
         if (!playing_)
             return;
 
-        // Updates rackets
-        if (Gdx.input.isKeyPressed(Input.Keys.Z))
-            racketLeft_.moveUp(Gdx.graphics.getDeltaTime());
-        else if (Gdx.input.isKeyPressed(Input.Keys.S))
-            racketLeft_.moveDown(Gdx.graphics.getDeltaTime());
-
-        if (Gdx.input.isKeyPressed(Input.Keys.I))
-            racketRight_.moveUp(Gdx.graphics.getDeltaTime());
-        else if (Gdx.input.isKeyPressed(Input.Keys.K))
-            racketRight_.moveDown(Gdx.graphics.getDeltaTime());
-
+        // Updates rackets according to user inputs
+        moveRackets();
         // Updates the ball
         ball_.update(Gdx.graphics.getDeltaTime());
 
@@ -68,10 +58,10 @@ public class PongScreen {
         // Draws the background
         batch.draw(terrainTexture_, 0, 0);
         // Draws the two players rackets
-        racketLeft_.draw(batch);
-        racketRight_.draw(batch);
+        racketLeft_.getSprite().draw(batch);
+        racketRight_.getSprite().draw(batch);
         // Draws the ball
-        ball_.draw(batch);
+        ball_.getSprite().draw(batch);
         // Draws the score
         font_.draw(batch, "" + scoreLeft_, 200, 540);
         font_.draw(batch, "" + scoreRight_, 600, 540);
@@ -79,20 +69,32 @@ public class PongScreen {
             font_.draw(batch, "Press R to begin", 270, 200);
     }
 
+    private void moveRackets() {
+        if (Gdx.input.isKeyPressed(Input.Keys.Z))
+            racketLeft_.moveUp(Gdx.graphics.getDeltaTime());
+        else if (Gdx.input.isKeyPressed(Input.Keys.S))
+            racketLeft_.moveDown(Gdx.graphics.getDeltaTime());
+
+        if (Gdx.input.isKeyPressed(Input.Keys.I))
+            racketRight_.moveUp(Gdx.graphics.getDeltaTime());
+        else if (Gdx.input.isKeyPressed(Input.Keys.K))
+            racketRight_.moveDown(Gdx.graphics.getDeltaTime());
+    }
+
     private void checkTerrainCollisions() {
         Vector2 direction = ball_.getDirection();
-        if (ball_.getY() >= 560 ||ball_.getY() <= 20)
+        if (ball_.getSprite().getY() >= 560 || ball_.getSprite().getY() <= 20)
             ball_.setDirection(new Vector2(direction.x, direction.y * -1));
     }
 
     private void checkRacketCollision() {
-        Rectangle rec1 = racketLeft_.getBoundingRectangle();
-        Rectangle rec2 = racketRight_.getBoundingRectangle();
+        Rectangle rec1 = racketLeft_.getSprite().getBoundingRectangle();
+        Rectangle rec2 = racketRight_.getSprite().getBoundingRectangle();
 
-        if (rec1.overlaps(ball_.getBoundingRectangle()))
-            ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getY() + ball_.getHeight() / 2));
-        if (rec2.overlaps(ball_.getBoundingRectangle())) {
-            Vector2 dir = getCollisionDirection(racketRight_, ball_.getY() + ball_.getHeight() / 2);
+        if (rec1.overlaps(ball_.getSprite().getBoundingRectangle()))
+            ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2));
+        if (rec2.overlaps(ball_.getSprite().getBoundingRectangle())) {
+            Vector2 dir = getCollisionDirection(racketRight_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2);
             dir.x *= -1;
             ball_.setDirection(dir);
         }
@@ -103,19 +105,19 @@ public class PongScreen {
         Vector2 direction = new Vector2(1, 0);
 
         // Upper part of the racket
-        direction.y = Math.abs((r.getY() + r.getHeight() / 2) - collisionPointY) / (r.getHeight() / 2);
-        if ((collisionPointY < r.getY() + r.getHeight() / 2))
+        direction.y = Math.abs((r.getSprite().getY() + r.getSprite().getHeight() / 2) - collisionPointY) / (r.getSprite().getHeight() / 2);
+        if ((collisionPointY < r.getSprite().getY() + r.getSprite().getHeight() / 2))
             direction.y *= -1;
 
         return direction;
     }
 
     private boolean checkGameOver() {
-        if (ball_.getX() <= -20) {
+        if (ball_.getSprite().getX() <= -20) {
             ++scoreRight_;
             return false;
         }
-        else if (ball_.getX() >= 800) {
+        else if (ball_.getSprite().getX() >= 800) {
             ++scoreLeft_;
             return false;
         }
