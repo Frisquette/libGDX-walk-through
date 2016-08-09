@@ -39,7 +39,7 @@ In our **Pong** game, we are going to use pretty basic maths. You can use someth
 
 As you can see on the above drawing, terrain collisions are going to be simply handled by keeping the same *x* direction and getting the **opposite** value of the *y* coordinate.
 We are going to store the direction as a 2D vector.
-For those who don't know what is a vector, you should **Google** it in order to know some basic maths. If you are here, I think that there is a lot of chance you know what is a vector, but anyway, it is better for the others to understand it.
+For those who don't know what is vector is, you should **Google** it in order to know some basic maths. If you are here, I think that there is a lot of chance you know what a vector is, but anyway, it is better for the others to understand it.
 
 In pseudocode, we will obtain something like:
 ```
@@ -124,3 +124,49 @@ public class Main extends ApplicationAdapter {
 Ok, now that our base is setup, we can begin to create our models, the ball and the racket.
 
 #### The different entities ####
+
+All our drawable entities will have a composition with **Sprite**. This object-modeling is not mandatory and is not the best model for all games. Here, the game is pretty simple and quick to code, we can keep it like this.
+
+So, the ball will be designed like this:
+* It will have a **Sprite** attribute and a **Vector2** representing the moving direction.
+* A constructor initializing both attributes.
+* An `init()` method randomizing the initial direction and moving the ball at the desired initial position.
+* A `setDirection()` method to change the moving direction whenever the ball collides.
+
+###### Ball.java #######
+```java
+public class Ball {
+
+    private Sprite  sprite_;
+    private Vector2 direction_;
+
+    public Ball() {
+        sprite_ = new Sprite(new Texture("pong/ball.png"));
+    }
+
+    public void update(float deltaTime) {
+        sprite_.translate(direction_.x * Const.BALL_SPEED * deltaTime,
+                          direction_.y * Const.BALL_SPEED * deltaTime);
+    }
+
+    public void init(int x, int y) {
+        sprite_.setPosition(x, y);
+        if (2 * (float)Math.random() - 1.0f <= 0.0f)
+            setDirection(new Vector2(-1.0f, 0.0f));
+        else
+            setDirection(new Vector2(1.0f, 0.0f));
+    }
+
+    public void setDirection(Vector2 direction) {
+        direction.nor();
+        direction_ = direction;
+    }
+
+    public Vector2 getDirection() {
+        return direction_;
+    }
+
+    public Sprite getSprite() {
+        return sprite_;
+    }
+```
