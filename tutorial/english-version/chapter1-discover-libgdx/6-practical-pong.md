@@ -85,8 +85,33 @@ public class PongScreen {
     public void render(SpriteBatch batch) { }
 ```
 
+We will add our basic background to this class, displayed as **Texture** (a **Sprite** does not make sense here).
+
+Let's first create the attribute, and instantiate it in the constructor:
+
+###### PongScreen.java #######
+```java
+public PongScreen() {
+       // Instantiates the background
+       terrainTexture_ = new Texture("pong/terrain.png");
+}
+...
+public void render(SpriteBatch batch) {
+    // Draws the background
+    batch.draw(terrainTexture_, 0, 0);
+}
+```
+
+The background has been made for the specified resolution: **800*600**.
+So, you do not have anything to do, it will fit by default, except if you try to run the game on a different resolution.
+You should see something like that:
+
+<p align="center">
+    <img src="../../resources/images/pong-screen1.jpg" width=50% />
+</p>
+
 For now, it should basically looks like that.
-I chose to do it like that in order to really split the **Pong** code from the exercises from previous/next chapters. You can directly use the **Main** class if you prefer.
+I chose to do it like that in order to really split the **Pong** code of the exercises from previous/next chapters. You can directly use the **Main** class if you prefer, instead of going through the **PongScreen** one that is not mandatory.
 Anyway, if you use this class, do not forget to call it in the **Main** class, which is the entry point of our game.
 
 ###### Main.java #######
@@ -98,6 +123,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch_ = new SpriteBatch();
+        // Instantiates it
 		pongScreen_ = new PongScreen();
 	}
 
@@ -199,3 +225,120 @@ public void setDirection(Vector2 direction) {
 A simple setter, **normalizing** the given direction in order to be sure to keep a vector representing a direction, with a unitary magnitude.
 
 ##### The Racket #####
+
+The racket is going to be designed like this:
+* The constructor will work the same.
+* There will be 2 methods: `moveUp()` and `moveDown()` Used to move the racket up
+and down while checking that it is not going out of the screen.
+* An init() method working the same way as previously.
+
+###### Racket.java #######
+```java
+public class Racket {
+
+    private int     initX_;
+    private int     initY_;
+
+    private Sprite  sprite_;
+
+    public Racket(int x, int y) {
+        sprite_ = new Sprite(new Texture("pong/racket.png"));
+
+        initX_ = x;
+        initY_ = y;
+
+        init();
+    }
+
+    public void moveUp(float deltaTime) {
+        if (sprite_.getY() + sprite_.getHeight() < 580)
+            sprite_.translateY(Const.RACKET_SPEED * deltaTime);
+    }
+
+    public void moveDown(float deltaTime) {
+        if (sprite_.getY() > 20)
+            sprite_.translateY(- Const.RACKET_SPEED * deltaTime);
+    }
+
+    public void init() {
+        sprite_.setPosition(initX_, initY_ - sprite_.getHeight() / 2);
+    }
+
+    public Sprite getSprite() {
+        return sprite_;
+    }
+}
+
+```
+
+Moving the racket up:
+
+###### Racket.java #######
+```java
+public void moveUp(float deltaTime) {
+    if (sprite_.getY() + sprite_.getHeight() < 580)
+        sprite_.translateY(Const.RACKET_SPEED * deltaTime);
+}
+```
+The code is pretty basic, we move the racket up only if it has not reached the top of the screen. As it moves only upside down, we only translate it on the *y* coordinate, by a given amount and the **delaTime** for time independance.
+The `moveDown()` method works the same way and do not need more explanations.
+
+#### Grouping things together ####
+
+Now that we have the **Racket** and the **Ball** class, we are going to put them in the **PongScreen** class to begin to code the gameplay.
+We will begin by adding two rackets, controlled by polling keys/mouse, using the input you want.
+
+We will now init the two rackets, the ball, and update the rackets by getting inputs from two different player (or the same one if you like to play alone).
+
+###### PongScreen.java #######
+```java
+public class PongScreen {
+
+    private Texture     terrainTexture_;
+
+    private Racket      racketLeft_;
+    private Racket      racketRight_;
+    private Ball        ball_;
+
+    public PongScreen() {
+        ...
+        racketLeft_ = new Racket(0, 300);
+        racketRight_ = new Racket(780, 300);
+
+        ball_ = new Ball(390, 290);
+    }
+
+    public void update() {
+        // Updates rackets according to user inputs
+        moveRackets();
+    }
+
+    public void render(SpriteBatch batch) {
+        ...
+        // Draws the two players rackets
+        racketLeft_.getSprite().draw(batch);
+        racketRight_.getSprite().draw(batch);
+        // Draws the ball
+        ball_.getSprite().draw(batch);
+    }
+
+    // Moves rackets up using W / I
+    // Moves rackets down using S / K
+    private void moveRackets() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W))
+            racketLeft_.moveUp(Gdx.graphics.getDeltaTime());
+        else if (Gdx.input.isKeyPressed(Input.Keys.S))
+            racketLeft_.moveDown(Gdx.graphics.getDeltaTime());
+
+        if (Gdx.input.isKeyPressed(Input.Keys.I))
+            racketRight_.moveUp(Gdx.graphics.getDeltaTime());
+        else if (Gdx.input.isKeyPressed(Input.Keys.K))
+            racketRight_.moveDown(Gdx.graphics.getDeltaTime());
+    }
+}
+```
+
+Here, we created the 2 rackets and the ball, giving some hardcoded position (as we know the resolution will never change).
+* In the `render()` method, we draw each entity, by drawing the associated sprite texture.
+* In the `update()` method, we call `moveRackets()`, which is performs a simple check, in order to know which key has been pressed.
+Here, I chose to let the left player play with **W** and **S** while the right player plays with **I** and **K**
