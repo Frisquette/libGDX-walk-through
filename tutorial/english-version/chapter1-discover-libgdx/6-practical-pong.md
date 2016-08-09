@@ -127,6 +127,8 @@ Ok, now that our base is setup, we can begin to create our models, the ball and 
 
 All our drawable entities will have a composition with **Sprite**. This object-modeling is not mandatory and is not the best model for all games. Here, the game is pretty simple and quick to code, we can keep it like this.
 
+##### The Ball #####
+
 So, the ball will be designed like this:
 * It will have a **Sprite** attribute and a **Vector2** representing the moving direction.
 * A constructor initializing both attributes.
@@ -140,8 +142,9 @@ public class Ball {
     private Sprite  sprite_;
     private Vector2 direction_;
 
-    public Ball() {
+    public Ball(int x, int y) {
         sprite_ = new Sprite(new Texture("pong/ball.png"));
+        init(x, y);
     }
 
     public void update(float deltaTime) {
@@ -170,3 +173,29 @@ public class Ball {
         return sprite_;
     }
 ```
+
+The constructor is pretty simple, it instanciates the **Sprite** by using a **Texture** and the path toward the ball image. It also calls the `init()` method, which generates a random number, positive or negative, used to choose whether the ball should go toward the left or the right part of the screen.
+
+```java
+...
+public void update(float deltaTime) {
+    sprite_.translate(direction_.x * Const.BALL_SPEED * deltaTime,
+                      direction_.y * Const.BALL_SPEED * deltaTime);
+}
+...
+```
+
+The update method simply move the sprite according to the direction, the chosen speed and the **deltaTime** used for time independance.
+
+:information_source: The `translate()` method from the **Sprite** class allows to translate, that is to say moving it with a certain amount from it's current position.
+
+Finally, the `setDirection()` method:
+```java
+public void setDirection(Vector2 direction) {
+    direction.nor();
+    direction_ = direction;
+}
+```
+A simple setter, **normalizing** the given direction in order to be sure to keep a vector representing a direction, with a unitary magnitude.
+
+##### The Racket #####
