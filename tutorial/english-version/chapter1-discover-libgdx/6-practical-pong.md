@@ -397,16 +397,13 @@ public void update() {
 }
 
 private void checkRacketCollision() {
-    // Gets back each rectangle bouding our rackets
     Rectangle rec1 = racketLeft_.getSprite().getBoundingRectangle();
     Rectangle rec2 = racketRight_.getSprite().getBoundingRectangle();
 
-    // Checks whether the ball collides with the left racket
     if (rec1.overlaps(ball_.getSprite().getBoundingRectangle()))
-        ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2));
-    // Checks whether the ball collides with the right racket
+        ball_.setDirection(getCollisionDirection(racketLeft_);
     if (rec2.overlaps(ball_.getSprite().getBoundingRectangle())) {
-        Vector2 dir = getCollisionDirection(racketRight_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2);
+        Vector2 dir = getCollisionDirection(racketRight_);
         dir.x *= -1;
         ball_.setDirection(dir);
     }
@@ -414,6 +411,7 @@ private void checkRacketCollision() {
 
 private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
      Vector2 direction = new Vector2(1, 0);
+     float collisionPointY = ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2;
 
      // Upper part of the racket
      float halfHeight = (r.getSprite().getHeight() / 2);
@@ -427,3 +425,4 @@ private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
 ```
 
 This part of the code needs more explanations.
+[WIP]

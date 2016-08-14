@@ -7,7 +7,7 @@
     * [Key handling (Part 1/2)](tutorial/english-version/chapter1-discover-libgdx/4-keys-handling-1.md)
     * [Key handling (Part 2/2)](tutorial/english-version/chapter1-discover-libgdx/4-keys-handling-2.md)
     * [Play sounds and music!](tutorial/english-version/chapter1-discover-libgdx/5-sound.md)
-    * [TP: Tic-Tac-Toe](tutorial/english-version/chapter1-discover-libgdx/6-practical-pong.md)
+    * [Practical: Pong!](tutorial/english-version/chapter1-discover-libgdx/6-practical-pong.md)
 * Going Further in libGDX 2D
     * [Cameras & Viewports: see the world in another way (Part 1/2)]()
     * [Cameras & Viewports: see the world in another way (Part 1/2)]()

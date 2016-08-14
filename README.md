@@ -1,4 +1,4 @@
-# LearnlibGDXTheRightWay
+# libGDX Walk Through
 Welcome in this libGDX tutorial, covering a lot of stuff, from basic to a bit less basic :smiley:
 
 ## Requirements ##
