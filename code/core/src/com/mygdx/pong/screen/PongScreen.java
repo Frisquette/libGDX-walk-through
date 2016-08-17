@@ -37,10 +37,8 @@ public class PongScreen {
     }
 
     public void update() {
-
         if (Gdx.input.isKeyPressed(Input.Keys.R) && !playing_)
             reset();
-
         if (!playing_)
             return;
 
@@ -51,7 +49,8 @@ public class PongScreen {
 
         checkTerrainCollisions();
         checkRacketCollision();
-        playing_ = checkGameOver();
+
+        checkGameOver();
     }
 
     public void render(SpriteBatch batch) {
@@ -84,7 +83,7 @@ public class PongScreen {
     private void checkTerrainCollisions() {
         Vector2 direction = ball_.getDirection();
         if (ball_.getSprite().getY() >= 560 || ball_.getSprite().getY() <= 20)
-            ball_.setDirection(new Vector2(direction.x, direction.y * -1));
+            ball_.setDirection(new Vector2(direction.x, - direction.y));
     }
 
     private void checkRacketCollision() {
@@ -92,36 +91,37 @@ public class PongScreen {
         Rectangle rec2 = racketRight_.getSprite().getBoundingRectangle();
 
         if (rec1.overlaps(ball_.getSprite().getBoundingRectangle()))
-            ball_.setDirection(getCollisionDirection(racketLeft_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2));
+            ball_.setDirection(getCollisionDirection(racketLeft_));
         if (rec2.overlaps(ball_.getSprite().getBoundingRectangle())) {
-            Vector2 dir = getCollisionDirection(racketRight_, ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2);
+            Vector2 dir = getCollisionDirection(racketRight_);
             dir.x *= -1;
             ball_.setDirection(dir);
         }
     }
 
-    private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
-
+    private Vector2 getCollisionDirection(Racket r) {
         Vector2 direction = new Vector2(1, 0);
+        float collisionPointY = ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2;
 
         // Upper part of the racket
-        direction.y = Math.abs((r.getSprite().getY() + r.getSprite().getHeight() / 2) - collisionPointY) / (r.getSprite().getHeight() / 2);
-        if ((collisionPointY < r.getSprite().getY() + r.getSprite().getHeight() / 2))
+        float halfHeight = (r.getSprite().getHeight() / 2);
+        float distanceToCenter = Math.abs(r.getSprite().getY() + halfHeight - collisionPointY);
+        direction.y = distanceToCenter / halfHeight;
+        if (collisionPointY < r.getSprite().getY() + halfHeight)
             direction.y *= -1;
 
         return direction;
     }
 
-    private boolean checkGameOver() {
+    private void checkGameOver() {
         if (ball_.getSprite().getX() <= -20) {
             ++scoreRight_;
-            return false;
+            playing_ = false;
         }
         else if (ball_.getSprite().getX() >= 800) {
             ++scoreLeft_;
-            return false;
+            playing_ = false;
         }
-        return true;
     }
 
     private void reset() {

@@ -12,10 +12,11 @@ public class Racket {
 
     public Racket(int x, int y) {
         sprite_ = new Sprite(new Texture("pong/racket.png"));
-        sprite_.setPosition(x, y  - sprite_.getHeight() / 2);
 
         initX_ = x;
         initY_ = y;
+
+        init();
     }
 
     public void moveUp(float deltaTime) {

@@ -409,12 +409,12 @@ private void checkRacketCollision() {
     }
 }
 
-private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
+private Vector2 getCollisionDirection(Racket r) {
      Vector2 direction = new Vector2(1, 0);
      float collisionPointY = ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2;
 
      // Upper part of the racket
-     float halfHeight = (r.getSprite().getHeight() / 2);
+     float halfHeight = r.getSprite().getHeight() / 2;
      float distanceToCenter = Math.abs(r.getSprite().getY() + halfHeight - collisionPointY);
      direction.y = distanceToCenter / halfHeight;
      if (collisionPointY < r.getSprite().getY() + halfHeight)
@@ -425,4 +425,124 @@ private Vector2 getCollisionDirection(Racket r, float collisionPointY) {
 ```
 
 This part of the code needs more explanations.
-[WIP]
+What basically does the `checkRacketCollision()` method is to checks whether a collisions occured between the ball and the left/right racket.
+If if finds one, it delegates the new direction computing to the `getCollisionDirection()` method.
+
+The `getCollisionDirection()` method works exactly as the previous drawing explained it.
+It takes the *y* position of the ball (the center of mass):
+
+```java
+float collisionPointY = ball_.getSprite().getY() + ball_.getSprite().getHeight() / 2;
+```
+
+It computes how far it is from the center of the corresponding racket:
+
+```java
+float halfHeight = r.getSprite().getHeight() / 2;
+float distanceToCenter = Math.abs(r.getSprite().getY() + halfHeight - collisionPointY);
+```
+
+And finally find a coefficient representing the distance toward this center, between 0 and 1.
+
+```java
+direction.y = distanceToCenter / halfHeight;
+```
+
+This gives us the *y* component of the **direction** vector, the more the ball is close to the center, the closer to 0 the *y* component will be.
+Finally, it checks whether the ball should go up or down, according to the part of the racket it has collided with (upper or lower region).
+
+I did not mention why we change the *x* **direction** of the ball when it collides with the right racket:
+
+```java
+if (rec2.overlaps(ball_.getSprite().getBoundingRectangle())) {
+    Vector2 dir = getCollisionDirection(racketRight_);
+    dir.x *= -1;
+    ball_.setDirection(dir);
+}
+```
+
+You may have understood it, the direction we get will always point toward the positive *x* axis, we just need to take the negative *x* value when it collides with the **right racket**.
+
+Ok, now you should have a playable game!
+
+The only problem is that, if you miss the ball, you are not going to be able to replay, and even worse, there is no score saying which player is better.
+
+Let's add a new attribute, **playing_**, to check whether the game is currently playing or not.
+It will help us to make a stop whenever the ball goes out of the screen.
+We will create a `reset()` method, used to replace the rackets, the ball, and reinitialize the game state, and also a `checkGameOver()` method, checking whether the ball goes out, and updating the scores accordingly.
+
+###### PongScreen.java #######
+```java
+...
+private int     scoreLeft_;
+private int     scoreRight_;
+private boolean playing_;
+...
+
+public void update() {
+    if (Gdx.input.isKeyPressed(Input.Keys.R) && !playing_)
+        reset();
+    if (!playing_)
+        return;
+    ...
+    checkGameOver();
+}
+
+...
+// Checks whether the ball goes out of the screen
+// Updates the score accordingly
+private void checkGameOver() {
+    if (ball_.getSprite().getX() <= -20) {
+            ++scoreRight_;
+            playing_ = false;
+    }
+else if (ball_.getSprite().getX() >= 800) {
+        ++scoreLeft_;
+        playing_ = false;
+    }
+}
+
+// Resets the ball and the rackets position
+// Resets the playing_ boolean
+private void reset() {
+    playing_ = true;
+    ball_.init(390, 290);
+    racketLeft_.init();
+    racketRight_.init();
+}
+```
+
+This step does not need a long explanation. We simply does not update the game whenever it is not currently **playing**.
+The `checkGameOver()` method is pretty descriptive itself, I just used the **-20** and **800** hardcoded values to let the ball going out entirely (remember the origin is not located at the center of the sprite).
+The `reset()` method is also very explanatory.
+
+We have the game itself, the **score**, there is only one thing missing: the **UI**.
+
+We will use a simple **BitmapFont**, located in the **asset** folder, in order to draw our score, and to explain that when the game is not playing, one of the player should press the **R** key.
+
+###### PongScreen.java #######
+```java
+...
+private BitmapFont  font_;
+...
+
+public PongScreen() {
+    ...
+    font_ = new BitmapFont(Gdx.files.internal("pong/font.fnt"));
+}
+
+public void render(SpriteBatch batch) {
+    ...
+    // Draws the score
+    font_.draw(batch, "" + scoreLeft_, 200, 540);
+    font_.draw(batch, "" + scoreRight_, 600, 540);
+    if (!playing_)
+        font_.draw(batch, "Press R to begin", 270, 200);
+}
+
+```
+
+Here, we instantiate the **BitmapFont** class giving it the path to the **font**.
+And we render our scores, for the left and right player.
+We do not forger to display an help message at the bottom of the screen whenever the game
+is not currently playing.
