@@ -546,3 +546,10 @@ Here, we instantiate the **BitmapFont** class giving it the path to the **font**
 And we render our scores, for the left and right player.
 We do not forger to display an help message at the bottom of the screen whenever the game
 is not currently playing.
+
+## Sum Up ##
+
+We finally made it! our first game is now working like a charm.
+Here, the whole thing was designed for beginner, more advanced people may have found it boring, but, like I said, the tutorial is oriented for beginners, experienced people should be there more to discover the **framework**, and especially what is coming in next chapters.
+
+Here, the game is quite hardcoded, and designed for a single resolution. Obviously, this is not how it works in real life, and that's what we are mainly going to focus on next chapters.
